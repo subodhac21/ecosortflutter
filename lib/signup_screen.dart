@@ -1,18 +1,22 @@
+import 'package:ecosort/logged_screen.dart';
+import 'package:ecosort/provider/signup_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
 
-class SignupPage extends StatefulWidget {
-  const SignupPage({super.key});
+class SignupPage extends StatelessWidget {
+   SignupPage({super.key});
 
-  @override
-  State<SignupPage> createState() => _SignupPageState();
-}
-
-class _SignupPageState extends State<SignupPage> {
   TextEditingController emailController = TextEditingController();
+
   TextEditingController passwordController = TextEditingController();
+
+  TextEditingController userController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    // final signProvider = Provider.of<SignupProvider>(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.brown,
@@ -105,7 +109,7 @@ class _SignupPageState extends State<SignupPage> {
                                       margin: const EdgeInsets.only(left: 15),
 
                                       child:  TextField(
-                                        controller: emailController,
+                                        controller: userController,
                                         decoration: const InputDecoration(
                                           border: InputBorder.none,
                                           hintText: "Enter your Username",
@@ -119,22 +123,22 @@ class _SignupPageState extends State<SignupPage> {
                               ],
                             ),
                           ),
-                          // Consumer<LoginProvider>(
-                          //   builder: (context, value, child){
-                          //     if(value.loading==false && value.userError == true){
-                          //       return Container(
-                          //         padding: const EdgeInsets.only(top: 20),
-                          //         child: const Text("Username Field is Empty", style: TextStyle(
-                          //             color: Colors.red,
-                          //             fontSize: 18
-                          //         ),),
-                          //       );
-                          //     }
-                          //     else{
-                          //       return const Text("");
-                          //     }
-                          //   },
-                          // ),
+                          Consumer<SignupProvider>(
+                            builder: (context, value, child){
+                              if(value.loading==false && value.userError == true){
+                                return Container(
+                                  padding: const EdgeInsets.only(top: 20),
+                                  child: const Text("Username Field is Empty", style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 18
+                                  ),),
+                                );
+                              }
+                              else{
+                                return const Text("");
+                              }
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -184,22 +188,22 @@ class _SignupPageState extends State<SignupPage> {
                               ],
                             ),
                           ),
-                          // Consumer<LoginProvider>(
-                          //   builder: (context, value, child){
-                          //     if(value.loading==false && value.userError == true){
-                          //       return Container(
-                          //         padding: const EdgeInsets.only(top: 20),
-                          //         child: const Text("Username Field is Empty", style: TextStyle(
-                          //             color: Colors.red,
-                          //             fontSize: 18
-                          //         ),),
-                          //       );
-                          //     }
-                          //     else{
-                          //       return const Text("");
-                          //     }
-                          //   },
-                          // ),
+                          Consumer<SignupProvider>(
+                            builder: (context, value, child){
+                              if(value.loading==false && value.emailError == true){
+                                return Container(
+                                  padding: const EdgeInsets.only(top: 20),
+                                  child: const Text("Email Field is Empty", style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 18
+                                  ),),
+                                );
+                              }
+                              else{
+                                return const Text("");
+                              }
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -250,22 +254,23 @@ class _SignupPageState extends State<SignupPage> {
                               ],
                             ),
                           ),
-                          // Consumer<LoginProvider>(
-                          //   builder: (context, value, child){
-                          //     if(value.loading==false && value.passError == true){
-                          //       return Container(
-                          //         padding: const EdgeInsets.only(top: 20),
-                          //         child: const Text("Password Field is Empty", style: TextStyle(
-                          //             color: Colors.red,
-                          //             fontSize: 18
-                          //         ),),
-                          //       );
-                          //     }
-                          //     else{
-                          //       return const Text("");
-                          //     }
-                          //   },
-                          // ),
+                          Consumer<SignupProvider>(
+                            builder: (context, value, child){
+
+                              if(value.loading==false && value.passError == true){
+                                return Container(
+                                  padding: const EdgeInsets.only(top: 20),
+                                  child: const Text("Password Field is Empty", style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 18
+                                  ),),
+                                );
+                              }
+                              else{
+                                return const Text("");
+                              }
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -274,45 +279,60 @@ class _SignupPageState extends State<SignupPage> {
                 ),
               ),
             ),
-            Center(
-              child: Container(
-                width: double.tryParse("200"),
-                height: double.tryParse("50"),
-                margin: const EdgeInsets.only(top: 40),
-                child: ElevatedButton(
-                  onPressed: (){
-                    //loginProvider.checkLogin(emailController.text, passwordController.text);
-                  },
-                  // child: loginProvider.loading == true ? const CircularProgressIndicator(): const Text("Submit", style: TextStyle(
-                  //     color: Colors.lightBlue,
-                  //     fontSize: 18
-                  // ),),
-                  child: Text("Register"),
+            Consumer<SignupProvider>(
+              builder: (context, signProvider, child){
 
-                ),
-              ),
+                if(signProvider.loginStatus == true && signProvider.loading == false){
+                  SchedulerBinding.instance.addPostFrameCallback((_) {
+                    // add your code here.
+                    Navigator.push(context,
+                      MaterialPageRoute(builder: (context) =>  LoggedScreen()),
+                    );
+                  });
+
+                }
+                return Center(
+                  child: Container(
+                    width: double.tryParse("200"),
+                    height: double.tryParse("50"),
+                    margin: const EdgeInsets.only(top: 40),
+                    child: ElevatedButton(
+                      onPressed: (){
+                        signProvider.checkLogin(userController.text,emailController.text, passwordController.text);
+
+                      },
+                      child: signProvider.loading == true ? const CircularProgressIndicator(): const Text("Register", style: TextStyle(
+                          color: Colors.lightBlue,
+                          fontSize: 18
+                      ),),
+                      // child: const Text("Register"),
+
+                    ),
+                  ),
+                );
+              },
             ),
-            const SizedBox(height: 40,),
+            const SizedBox(height: 0,),
 
-            const SizedBox(height: 20,),
-            // Consumer<LoginProvider>(
-            //   builder: (context, value, child){
-            //     if(value.loading==false && value.credentials == false){
-            //       return Center(
-            //         child: Container(
-            //           padding: const EdgeInsets.only(top: 20),
-            //           child: const Text("Invalid Credentials", style: TextStyle(
-            //               color: Colors.red,
-            //               fontSize: 18
-            //           ),),
-            //         ),
-            //       );
-            //     }
-            //     else{
-            //       return const Text("");
-            //     }
-            //   },
-            // ),
+            const SizedBox(height: 0,),
+            Consumer<SignupProvider>(
+              builder: (context, value, child){
+                if(value.loading==false && value.credentials == false){
+                  return Center(
+                    child: Container(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: const Text("User with the username already exists.", style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 18
+                      ),),
+                    ),
+                  );
+                }
+                else{
+                  return const Text("");
+                }
+              },
+            ),
           ],
         ),
       ),

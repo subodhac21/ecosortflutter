@@ -10,6 +10,7 @@ import "package:http/http.dart";
 import "package:provider/provider.dart";
 
 
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -30,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // loginProvider.checkLogin("Emma", "emma");
     return  Scaffold(
-      backgroundColor: const Color.fromRGBO(75,147,233, 1.0),
+      backgroundColor: const Color.fromRGBO(107,125,92, 1.0),
       body: Container(
         decoration:  BoxDecoration(
           color: Colors.white,
@@ -53,14 +54,14 @@ class _HomeScreenState extends State<HomeScreen> {
               alignment: Alignment.topCenter,
               child:  Text(error),
             ),
-            const Align(
-              alignment: Alignment.center,
-              child: Text("Welcome user", style: TextStyle(
-                  fontSize: 40,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w400,
-              )),
-            ),
+            // const Align(
+            //   alignment: Alignment.center,
+            //   child: Text("Welcome user", style: TextStyle(
+            //       fontSize: 40,
+            //       color: Colors.grey,
+            //       fontWeight: FontWeight.w400,
+            //   )),
+            // ),
             const Align(
               child: SizedBox(
                 height: 20,
@@ -93,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                              margin:  const EdgeInsets.only(top: 10),
                              padding:   const EdgeInsets.only(top: 15, left: 10, right: 10, bottom: 15),
                              decoration:   BoxDecoration(
-                               color:  const Color.fromRGBO(75,147,233, 1.0),
+                               color:  const Color.fromRGBO(107,125,92, 1.0),
                                borderRadius: BorderRadius.circular(8),
                                boxShadow: const [
                                   BoxShadow(
@@ -158,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             margin:  const EdgeInsets.only(top: 10),
                             padding:   const EdgeInsets.only(top: 15, left: 10, right: 10, bottom: 15),
                             decoration:   BoxDecoration(
-                              color:  const Color.fromRGBO(75,147,233, 1.0),
+                              color:  const Color.fromRGBO(107,125,92, 1.0),
                               borderRadius: BorderRadius.circular(8),
                               boxShadow: const [
                                 BoxShadow(
@@ -224,11 +225,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: ElevatedButton(
                   onPressed: (){
                     loginProvider.checkLogin(emailController.text, passwordController.text);
+
+                    // print(context.read<LoginProvider>().loading);
+                    // if(context.read<LoginProvider>().loginStatus == true){
+                    //     Navigator.push(context,
+                    //     MaterialPageRoute(builder: (context)=> LoggedScreen())
+                    //     );
+                    // }
                   },
                   child: loginProvider.loading == true ? const CircularProgressIndicator(): const Text("Submit", style: TextStyle(
-                    color: Colors.lightBlue,
+                    color: Color.fromRGBO(107,125,92, 1.0),
                     fontSize: 18
-                  ),),
+                  ),
+                  ),
 
                 ),
               ),
@@ -242,10 +251,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   GestureDetector(
                       onTap: (){
                         Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const SignupPage()),
+                          MaterialPageRoute(builder: (context) =>  SignupPage()),
                         );
                       },
-                      child: const Text("Sign Up", style: TextStyle(color: Color.fromRGBO(75,147,233, 1.0), fontSize: 20))),
+                      child: const Text("Sign Up", style: TextStyle(color: Color.fromRGBO(107,125,92, 1.0), fontSize: 20))),
                 ],
               ),
             ),

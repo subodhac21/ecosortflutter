@@ -19,11 +19,16 @@ class LoginProvider with ChangeNotifier{
   bool? get passError => _passError;
   bool? get loading => _loading;
   bool? get credentials => _credentials;
-  String _username = "";
+  String? _username;
   String? get username => _username;
   int? _userId;
   int? get userId => _userId;
+  bool? _redirect = false;
+  bool? get redirect =>_redirect;
 
+  void setRedirect(bool redirect){
+    _redirect = redirect;
+  }
   setLoading(bool value){
     _loading = value;
     notifyListeners();
@@ -40,7 +45,7 @@ class LoginProvider with ChangeNotifier{
       var url = Uri.http(apiLink, 'login/');
       var response = await http.post(url, body: {'username': username, 'password': password});
       final data = jsonDecode(response.body);
-      print(data);
+      // print(data);
       if (response.statusCode == 200) {
         if (data['message'] == "Login successful") {
           _username = username;
@@ -84,17 +89,22 @@ class LoginProvider with ChangeNotifier{
 
         }
       } else {
+
         // Handle other status codes
-        print("error");
+        // print("error");
 
       }
     } on SocketException catch (e) {
+      setLoading(false);
+      _credentials = false;
       // Handle SocketException
       print("error");
 
 
     } on http.ClientException catch (e) {
       // Handle http.ClientException
+      setLoading(false);
+      _credentials = false;
       print("error");
 
 

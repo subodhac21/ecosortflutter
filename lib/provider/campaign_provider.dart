@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import "dart:io";
 
-class WastesProvider with ChangeNotifier{
+class CampaignProvider with ChangeNotifier{
   // bool _loading = false;
   // setLoading(bool value){
   //   _loading = value;
@@ -15,12 +15,12 @@ class WastesProvider with ChangeNotifier{
   List _allData = [];
   List get allData => _allData;
   bool hasLoadedData = false;
-  Future<void> getAllWastes() async{
+  Future<void> getAllCampaigns() async{
     String apiLink = Api().loginApi();
     final client = http.Client();
     // setLoading(true);
     try{
-      var url = Uri.http(apiLink, 'wastes/');
+      var url = Uri.http(apiLink, 'allcampaign/');
       var response = await http.get(url);
       final data = jsonDecode(response.body);
       if (response.statusCode == 200) {

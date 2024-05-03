@@ -14,10 +14,14 @@ class SignupProvider with ChangeNotifier{
   bool _loginStatus = false;
   bool _userError = false;
   bool _passError = false;
+  bool _emailError = false;
   bool? _credentials;
+  int? _userId;
+  int? get userId => _userId;
   bool? get loginStatus => _loginStatus;
   bool? get userError => _userError;
   bool? get passError => _passError;
+  bool? get emailError => _emailError;
   bool? get loading => _loading;
   bool? get credentials => _credentials;
   String _username = "";
@@ -39,20 +43,24 @@ class SignupProvider with ChangeNotifier{
       var url = Uri.http(apiLink, 'register/');
       var response = await http.post(url, body: {'username': username,'email': email, 'password': password});
       final data = jsonDecode(response.body);
-      // print(data);
       if (response.statusCode == 200) {
-        if (data['message'] == "Login successful") {
+        if (data['message'] == "Register successful") {
           _username = username;
           _loginStatus = true;
+          _userId = data["user_id"];
           setLoading(false);
         }
 
       }
-      if(response.statusCode == 401){
-        if(data['error']=="Invalid credentials") {
+      if(response.statusCode == 400){
+        if(data['username'][0]=="A user with that username already exists.") {
           // _loginStatus = false;
           setLoading(false);
           _credentials = false;
+        }
+        else{
+          _credentials = true;
+          setLoading(false);
         }
 
       }
@@ -72,6 +80,14 @@ class SignupProvider with ChangeNotifier{
           setLoading(false);
 
         }
+        if(email == ""){
+          _emailError = true;
+          setLoading(false);
+        }
+        else{
+          _emailError = false;
+          setLoading(false);
+        }
         if (password == "") {
           _passError = true;
           setLoading(false);
@@ -83,17 +99,17 @@ class SignupProvider with ChangeNotifier{
         }
       } else {
         // Handle other status codes
-        print("error");
+        // print("error");
 
       }
     } on SocketException catch (e) {
       // Handle SocketException
-      print("error");
+      // print("error");
 
 
     } on http.ClientException catch (e) {
       // Handle http.ClientException
-      print("error");
+      // print("error");
 
 
     } finally {

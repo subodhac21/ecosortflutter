@@ -1,10 +1,15 @@
 import "package:ecosort/home_screen.dart";
 import "package:ecosort/main.dart";
+import "package:ecosort/pages/achievements.dart";
+import "package:ecosort/pages/blog_list.dart";
 import "package:ecosort/pages/camera_page.dart";
+import "package:ecosort/pages/campaign_list.dart";
 import "package:ecosort/pages/home_page.dart";
 import "package:ecosort/provider/login_provider.dart";
+import "package:ecosort/provider/signup_provider.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:flutter/widgets.dart";
 import "package:provider/provider.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
@@ -22,6 +27,7 @@ class _LoggedScreenState extends State<LoggedScreen> {
   @override
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<LoginProvider>(context);
+    final signProvider = Provider.of<SignupProvider>(context);
     final ThemeData theme = Theme.of(context);
     return  Scaffold(
         bottomNavigationBar: NavigationBar(
@@ -35,39 +41,67 @@ class _LoggedScreenState extends State<LoggedScreen> {
           destinations: const <Widget>[
             NavigationDestination(
               selectedIcon: Icon(Icons.home),
-              icon: Icon(Icons.home_outlined),
+
+              icon: Icon(Icons.home_outlined, color: Color.fromRGBO(107,125,92, 1.0),),
               label: 'Home',
             ),
             NavigationDestination(
-              icon: Badge(child: Icon(Icons.camera_sharp)),
+              icon: Badge(child: Icon(Icons.camera_sharp, color: Color.fromRGBO(107,125,92, 1.0),)),
               label: 'Take photo',
             ),
             NavigationDestination(
               icon: Badge(
-                label: Text('2'),
-                child: Icon(Icons.emoji_events),
+                // label: Text('2'),
+                child: Icon(Icons.emoji_events, color: Color.fromRGBO(107,125,92, 1.0),),
               ),
               label: 'Achievements',
             ),
           ],
         ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color.fromRGBO(82, 170, 94, 1.0),
+        tooltip: 'Increment',
+        onPressed: (){
+          Navigator.push(context,
+          MaterialPageRoute(builder: (context)=>  CampaignList())
+          );
+        },
+        child: const Icon(Icons.campaign, color: Colors.white, size: 28),
+      ),
         appBar: AppBar(
-          title: const Text('EcoSort-Waste Classification'),
-          backgroundColor: const Color.fromRGBO(75,147,233, 1.0),
+          title: const Text('EcoSort-Waste Classification', style: TextStyle(color: Colors.white),),
+          centerTitle: true,
         ),
         drawer: Drawer(
-          child:  Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Consumer<LoginProvider>(
-                  builder: (context, value, child){
-                    String? username = value.username;
-                    return  Text("Hello $username");
+          child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+          /// Header of the Drawer
+          Material(
+            color: const Color.fromRGBO(107,125,92, 1.0),
+            child: InkWell(
 
-                  },
-                ),
-                ElevatedButton(
+            child: Container(
+            padding: EdgeInsets.only(
+            top: MediaQuery.of(context).padding.top,
+            bottom: 24
+          ),
+          child:  Column(
+            children: [
+            const CircleAvatar(
+            radius: 52,
+            backgroundImage: NetworkImage(
+          'https://cdn3.vectorstock.com/i/1000x1000/30/97/flat-business-man-user-profile-avatar-icon-vector-4333097.jpg'
+          ),
+          ),
+          const SizedBox(height: 12,),
+            Text('${loginProvider.username ?? signProvider.username}',
+            style: const TextStyle(
+            fontSize: 28,
+            color: Colors.white
+          ),),
+      ElevatedButton(
                   onPressed: (){
                     Navigator.push(
                       context,
@@ -77,21 +111,45 @@ class _LoggedScreenState extends State<LoggedScreen> {
                   child: const Text("Logout"),
                 ),
 
-              ],
-            ),
+    ],
+    ),
+    ),
+    ),
+    ),
+
+    Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ListTile(
+            leading: const Icon(Icons.home), title: const Text("Blog Content"),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>const BlogList()));
+            },
           ),
-        ),
+        ],
+      ),
+    )
+
+    /// Header Menu items
+
+    ],
+    ),),),
         body:  <Widget>[
           /// Home page
-         const Homepage(),
+          Homepage(),
 
           /// Notifications page
 
-          const MyCamera(),
-          /// Messages page
-          Container(
-            child: const Text("Achievements"),
+           MyCamera(
+            voidCallback: (){
+              setState(() {
+                currentPageIndex = 2  ;
+              });
+            }
           ),
+          /// Messages page
+         const Achievements(),
         ][currentPageIndex],
     );
   }

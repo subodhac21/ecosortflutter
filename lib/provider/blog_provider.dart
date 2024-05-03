@@ -5,26 +5,33 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import "dart:io";
 
-class WastesProvider with ChangeNotifier{
+import 'package:provider/provider.dart';
+
+class BlogProvider with ChangeNotifier{
   // bool _loading = false;
   // setLoading(bool value){
   //   _loading = value;
   //   notifyListeners();
   // }
-
-  List _allData = [];
-  List get allData => _allData;
+  String _allData = "";
+  String get allData => _allData;
+  String _cat = "";
+  String get cat => _cat;
   bool hasLoadedData = false;
-  Future<void> getAllWastes() async{
+
+  Future<void> getAllContent(int id) async{
     String apiLink = Api().loginApi();
     final client = http.Client();
+
     // setLoading(true);
     try{
-      var url = Uri.http(apiLink, 'wastes/');
-      var response = await http.get(url);
+      var url = Uri.http(apiLink, 'getContentByName/');
+      // print(id);
+      var response = await http.post(url, body: {"id": "$id"});
       final data = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        _allData = data;
+        _allData = data["content"];
+        _cat = data['title'];
         hasLoadedData = true;
         notifyListeners();
       }

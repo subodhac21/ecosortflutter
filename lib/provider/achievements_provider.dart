@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import "dart:io";
 
-class WastesProvider with ChangeNotifier{
+class AchievementsProvider with ChangeNotifier{
   // bool _loading = false;
   // setLoading(bool value){
   //   _loading = value;
@@ -15,13 +15,13 @@ class WastesProvider with ChangeNotifier{
   List _allData = [];
   List get allData => _allData;
   bool hasLoadedData = false;
-  Future<void> getAllWastes() async{
+  Future<void> getAllAchievementsById(int Id) async{
     String apiLink = Api().loginApi();
     final client = http.Client();
     // setLoading(true);
     try{
-      var url = Uri.http(apiLink, 'wastes/');
-      var response = await http.get(url);
+      var url = Uri.http(apiLink, 'allachieveById/');
+      var response = await http.post(url, body: {"user_id": "$Id"});
       final data = jsonDecode(response.body);
       if (response.statusCode == 200) {
         _allData = data;

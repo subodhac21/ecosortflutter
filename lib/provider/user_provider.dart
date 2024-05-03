@@ -13,6 +13,7 @@ class UserProvider with ChangeNotifier{
   // }
   List _allData = [];
   List get allData => _allData;
+  bool hasLoadedData = false;
 
   Future<void> getAllUsers() async{
     String apiLink = Api().loginApi();
@@ -24,17 +25,18 @@ class UserProvider with ChangeNotifier{
       final data = jsonDecode(response.body);
       if (response.statusCode == 200) {
         _allData = data;
+        hasLoadedData = true;
         notifyListeners();
       }
     }
     on SocketException catch (e) {
       // Handle SocketException
-      print("error");
+      // print("error");
 
 
     } on http.ClientException catch (e) {
       // Handle http.ClientException
-      print("error");
+      // print("error");
 
 
     } finally {

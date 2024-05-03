@@ -3,8 +3,6 @@ import "../provider/resources/api.dart";
 
 class GarbageCard extends StatelessWidget {
 
-
-
   String title;
   String category;
   String cardImage;
@@ -15,7 +13,6 @@ class GarbageCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String apiLink = Api().loginApi();
-
       return Card(
           elevation: 4.0,
           child: Column(
@@ -28,7 +25,7 @@ class GarbageCard extends StatelessWidget {
               Container(
                 height: 200.0,
                 child: Ink.image(
-                  image: NetworkImage("http://"+apiLink+"/static/"+cardImage),
+                  image: NetworkImage("http://"+apiLink+"/media/"+cardImage),
                   fit: BoxFit.cover,
                 ),
               ),
