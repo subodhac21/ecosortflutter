@@ -8,7 +8,6 @@ import "package:flutter/material.dart";
 import 'package:http/http.dart' as http;
 
 
-
 class SignupProvider with ChangeNotifier{
   bool _loading = false;
   bool _loginStatus = false;
@@ -24,12 +23,17 @@ class SignupProvider with ChangeNotifier{
   bool? get emailError => _emailError;
   bool? get loading => _loading;
   bool? get credentials => _credentials;
-  String _username = "";
+  String? _username = "";
   String? get username => _username;
 
   setLoading(bool value){
     _loading = value;
     notifyListeners();
+  }
+  void resetUser(){
+    _userId = null;
+    _username = null;
+    _loginStatus = false;
   }
 
   Future<void> checkLogin(String username, String email,  String password) async {
@@ -52,18 +56,41 @@ class SignupProvider with ChangeNotifier{
         }
 
       }
-      if(response.statusCode == 400){
-        if(data['username'][0]=="A user with that username already exists.") {
-          // _loginStatus = false;
-          setLoading(false);
-          _credentials = false;
+      if(response.statusCode == 400) {
+        if (data.containsKey("username")) {
+          if (data['username'][0] ==
+              "A user with that username already exists.") {
+            // _loginStatus = false;
+            setLoading(false);
+            _credentials = false;
+          }
+          else {
+            _credentials = true;
+            setLoading(false);
+          }
         }
         else{
           _credentials = true;
           setLoading(false);
         }
-
+        if (data.containsKey("email")) {
+          if (data['email'][0] == "Enter a valid email address.") {
+            // _loginStatus = false;
+            setLoading(false);
+            _emailError = true;
+          }
+          else {
+            _emailError = false;
+            setLoading(false);
+          }
+        }
+        else{
+          _emailError = false;
+          setLoading(false);
+        }
       }
+
+
       else{
         // _loginStatus = false;
         setLoading(false);
@@ -80,14 +107,7 @@ class SignupProvider with ChangeNotifier{
           setLoading(false);
 
         }
-        if(email == ""){
-          _emailError = true;
-          setLoading(false);
-        }
-        else{
-          _emailError = false;
-          setLoading(false);
-        }
+
         if (password == "") {
           _passError = true;
           setLoading(false);

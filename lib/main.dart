@@ -39,29 +39,7 @@ class MainLogo extends StatefulWidget{
 
 class _MainLogoState extends State<MainLogo> {
   @override
-  void initState() {
 
-    super.initState();
-
-    Future.delayed(
-
-      Duration(seconds: 3),
-
-          () {
-
-        Navigator.pushReplacement(
-
-          context,
-
-          MaterialPageRoute(builder: (context) => MyApp()),
-
-        );
-
-      },
-
-    );
-
-  }
   @override
   Widget build(BuildContext context) {
 

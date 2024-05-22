@@ -34,6 +34,8 @@ class _MyCameraState extends State<MyCamera> {
   String descriptionError = "";
   String wasteNameError = "";
   // Image Picker function to get image from gallery
+
+
   Future getImageFromGallery() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
@@ -107,42 +109,112 @@ class _MyCameraState extends State<MyCamera> {
 
             return Center(
               child: Container(
-                height: 400,
+                height: 600,
+                width: 400,
                 color: const Color.fromRGBO(107,125,92, 1.0),
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+
                     mainAxisSize: MainAxisSize.min,
 
                     children: <Widget>[
 
                       Text("Category is $cat!", style: const TextStyle(fontSize: 25, color: Colors.white),),
                       const SizedBox(
-                        height: 80,
+                        height: 40,
                       ),
                        Text('You have likelihood to get ${check_waste_provider.points} points', style: const TextStyle(fontSize: 18, color: Colors.white),),
                       const SizedBox(
-                        height: 80,
+                        height: 40,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: TextFormField(
+                          controller: nameController,
+                          cursorColor: Colors.white,
+
+                          decoration: const InputDecoration(
+                            icon: Icon(Icons.home),
+                            hintText: 'Waste Name',
+                            labelText: 'Name *',
+                            iconColor: Colors.white,
+                            fillColor: Colors.white, // Setting the background color
+                            filled: true,
+                          ),
+                          onSaved: (String? value) {
+                            // This optional block of code can be used to run
+                            // code when the user saves the form.
+                          },
+                          validator: (String? value) {
+                            return (value != null && value.contains('@'))
+                                ? 'Do not use the @ char.'
+                                : null;
+                          },
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: TextFormField(
+                          controller: descController,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          cursorColor: Colors.white,
+                          decoration: const InputDecoration(
+                            icon: Icon(Icons.telegram),
+                            hintText: 'About Waste',
+                            labelText: 'Description *',
+                            iconColor: Colors.white,
+                            fillColor: Colors.white, // Setting the background color
+                            filled: true,
+                          ),
+                          onSaved: (String? value) {
+                            // This optional block of code can be used to run
+                            // code when the user saves the form.
+                          },
+                          validator: (String? value) {
+                            return (value != null && value.contains('@'))
+                                ? 'Do not use the @ char.'
+                                : null;
+                          },
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 40,
                       ),
                       // ChangeNotifierProvider<AddWasteProvider>(
                       //   create: (_) => AddWasteProvider(),
                       //   builder: (context, _){
                       //     final add_waste_provider = Provider.of<AddWasteProvider>(context);
                            ElevatedButton(
-                            child: add_waste_provider.loading == true ? const CircularProgressIndicator(): const Text("Dispose and Get Feedback", style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18
-                            ),
-                            ),
-                            onPressed: () {
 
-                              add_waste_provider.addWastes(nameController.text, descController.text, _image != null ? _image! : add_waste_provider.savedImage!, id, loginProvider.username ?? signProvider.username!);
-                              waste_provider.getAllWastes();
-                              if(check_waste_provider.loading == false && check_waste_provider.catName != null){
-                                // widget.voidCallback();
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=> BlogList()));
+                               style: ElevatedButton.styleFrom(
+                                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15), // Button padding
+                                 shape: RoundedRectangleBorder(
+                                   borderRadius: BorderRadius.circular(10), // Button border radius
+                                 ),
+                                 elevation: 3, // Button elevation
+                               ),
+                            onPressed: () {
+                              if(nameController.text.trim() != "" && descController.text.trim() != ""){
+                                add_waste_provider.addWastes(nameController.text, descController.text, _image != null ? _image! : add_waste_provider.savedImage!, id, loginProvider.username ?? signProvider.username!);
+                                waste_provider.getAllWastes();
+                                if(check_waste_provider.loading == false && check_waste_provider.catName != null){
+                                  // widget.voidCallback();
+                                  check_waste_provider.setCatName(null);
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> const BlogList()));
+                                }
                               }
-                            }
+
+                            },
+                               child:  add_waste_provider.loading == true ? const CircularProgressIndicator(): const Text("Save and Get Feedback", style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18
+                ),
+                ),
 
                               // print(add_waste_provider.loading);
 
@@ -181,52 +253,14 @@ class _MyCameraState extends State<MyCamera> {
                       const SizedBox(
                         height: 40,
                       ),
-                      TextFormField(
-                        controller: nameController,
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.person),
-                          hintText: 'Waste Name',
-                          labelText: 'Name *',
-                        ),
-                        onSaved: (String? value) {
-                          // This optional block of code can be used to run
-                          // code when the user saves the form.
-                        },
-                        validator: (String? value) {
-                          return (value != null && value.contains('@'))
-                              ? 'Do not use the @ char.'
-                              : null;
-                        },
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      TextFormField(
-                        controller: descController,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.person),
-                          hintText: 'About Waste',
-                          labelText: 'Description *',
-                        ),
-                        onSaved: (String? value) {
-                          // This optional block of code can be used to run
-                          // code when the user saves the form.
-                        },
-                        validator: (String? value) {
-                          return (value != null && value.contains('@'))
-                              ? 'Do not use the @ char.'
-                              : null;
-                        },
-                      ),
+
                       const SizedBox(
                         height: 40,
                       ),
                       ElevatedButton(onPressed: () {
                         int? id = loginProvider.userId;
-                        if (nameController.text != "" &&
-                            descController.text != "") {
+                        // if (nameController.text != "" &&
+                        //     descController.text != "") {
                           check_waste_provider.checkWaste(
                               _image != null ? _image! : add_waste_provider
                                   .savedImage!);
@@ -252,14 +286,14 @@ class _MyCameraState extends State<MyCamera> {
                           // }
 
 
-                        }
-                        else {
-                          descriptionError = "The description field is empty";
-                          wasteNameError = "The waste name field is empty";
-                          setState() {
-
-                          }
-                        }
+                        // }
+                        // else {
+                        //   descriptionError = "The description field is empty";
+                        //   wasteNameError = "The waste name field is empty";
+                        //   setState() {
+                        //
+                        //   }
+                        // }
                       },
                         child: check_waste_provider.loading == true
                             ? const CircularProgressIndicator()

@@ -20,15 +20,16 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  TextEditingController emailController = TextEditingController();
+  TextEditingController userController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   String error = "";
+  String username = "";
+  String password = "";
 
   @override
   Widget build(BuildContext context) {
     // getData();
     final loginProvider = Provider.of<LoginProvider>(context);
-
     // loginProvider.checkLogin("Emma", "emma");
     return  Scaffold(
       backgroundColor: const Color.fromRGBO(107,125,92, 1.0),
@@ -44,32 +45,22 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-        padding: const EdgeInsets.only(left: 40, right: 40, top: 80),
+        padding: const EdgeInsets.only(left: 40, right: 40, top: 40),
         child: ListView(
-          // mainAxisAlignment: MainAxisAlignment.start,
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          //   mainAxisSize: MainAxisSize.max,
+
           children: [
               Align(
               alignment: Alignment.topCenter,
               child:  Text(error),
             ),
-            // const Align(
-            //   alignment: Alignment.center,
-            //   child: Text("Welcome user", style: TextStyle(
-            //       fontSize: 40,
-            //       color: Colors.grey,
-            //       fontWeight: FontWeight.w400,
-            //   )),
-            // ),
-            const Align(
-              child: SizedBox(
-                height: 20,
-              ),
+
+             Align(
+              alignment: Alignment.center,
+              child: Image.asset("assets/icons/Eco1.png", width: 150,),
             ),
             const Align(
               alignment: Alignment.center,
-              child:  Text("Sign in", style: TextStyle(
+              child:  Text("Sign In", style: TextStyle(
                   fontSize: 40,
                   color: Colors.white,
                   fontWeight: FontWeight.w400
@@ -113,7 +104,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                        margin: const EdgeInsets.only(left: 15),
 
                                        child:  TextField(
-                                         controller: emailController,
+                                         onChanged: (text){
+                                           setState(() {
+                                             username = text;
+                                           });
+
+                                         },
+                                         controller: userController,
                                          decoration: const InputDecoration(
                                              border: InputBorder.none,
                                              hintText: "Enter your Username",
@@ -127,22 +124,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                ],
                              ),
                            ),
-                           Consumer<LoginProvider>(
-                             builder: (context, value, child){
-                               if(value.loading==false && value.userError == true){
-                                 return Container(
-                                   padding: const EdgeInsets.only(top: 20),
-                                   child: const Text("Username Field is Empty", style: TextStyle(
-                                     color: Colors.red,
-                                     fontSize: 18
-                                   ),),
-                                 );
-                               }
-                               else{
-                                 return const Text("");
-                               }
-                             },
-                           ),
+                           // Consumer<LoginProvider>(
+                           //   builder: (context, value, child){
+                           //     if(value.loading==false && value.userError == true){
+                           //       return Container(
+                           //         padding: const EdgeInsets.only(top: 20),
+                           //         child: const Text("Username Field is Empty", style: TextStyle(
+                           //           color: Colors.red,
+                           //           fontSize: 18
+                           //         ),),
+                           //       );
+                           //     }
+                           //     else{
+                           //       return const Text("");
+                           //     }
+                           //   },
+                           // ),
                          ],
                        ),
                      ),
@@ -178,6 +175,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                       margin: const EdgeInsets.only(left: 15),
 
                                       child:  TextField(
+                                        onChanged: (text){
+                                          setState(() {
+                                            password = text;
+                                          });
+
+                                        },
                                         controller: passwordController,
                                         obscureText: true,
                                         decoration: const InputDecoration(
@@ -193,22 +196,22 @@ class _HomeScreenState extends State<HomeScreen> {
                               ],
                             ),
                           ),
-                          Consumer<LoginProvider>(
-                            builder: (context, value, child){
-                              if(value.loading==false && value.passError == true){
-                                return Container(
-                                  padding: const EdgeInsets.only(top: 20),
-                                  child: const Text("Password Field is Empty", style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 18
-                                  ),),
-                                );
-                              }
-                              else{
-                                return const Text("");
-                              }
-                            },
-                          ),
+                          // Consumer<LoginProvider>(
+                          //   builder: (context, value, child){
+                          //     if(value.loading==false && value.passError == true){
+                          //       return Container(
+                          //         padding: const EdgeInsets.only(top: 20),
+                          //         child: const Text("Password Field is Empty", style: TextStyle(
+                          //             color: Colors.red,
+                          //             fontSize: 18
+                          //         ),),
+                          //       );
+                          //     }
+                          //     else{
+                          //       return const Text("");
+                          //     }
+                          //   },
+                          // ),
                         ],
                       ),
                     ),
@@ -218,27 +221,30 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Center(
-              child: Container(
-                width: double.tryParse("200"),
-                height: double.tryParse("50"),
-                margin: const EdgeInsets.only(top: 40),
-                child: ElevatedButton(
-                  onPressed: (){
-                    loginProvider.checkLogin(emailController.text, passwordController.text);
+              child: Visibility(
+                visible: username.trim() != "" && password.trim() != "" ? true : false,
+                child: Container(
+                  width: double.tryParse("200"),
+                  height: double.tryParse("50"),
+                  margin: const EdgeInsets.only(top: 40),
+                  child: ElevatedButton(
+                    onPressed: (){
+                      loginProvider.checkLogin(userController.text, passwordController.text);
 
-                    // print(context.read<LoginProvider>().loading);
-                    // if(context.read<LoginProvider>().loginStatus == true){
-                    //     Navigator.push(context,
-                    //     MaterialPageRoute(builder: (context)=> LoggedScreen())
-                    //     );
-                    // }
-                  },
-                  child: loginProvider.loading == true ? const CircularProgressIndicator(): const Text("Submit", style: TextStyle(
-                    color: Color.fromRGBO(107,125,92, 1.0),
-                    fontSize: 18
-                  ),
-                  ),
+                      // print(context.read<LoginProvider>().loading);
+                      // if(context.read<LoginProvider>().loginStatus == true){
+                      //     Navigator.push(context,
+                      //     MaterialPageRoute(builder: (context)=> LoggedScreen())
+                      //     );
+                      // }
+                    },
+                    child: loginProvider.loading == true ? const CircularProgressIndicator(): const Text("Submit", style: TextStyle(
+                      color: Color.fromRGBO(107,125,92, 1.0),
+                      fontSize: 18
+                    ),
+                    ),
 
+                  ),
                 ),
               ),
             ),

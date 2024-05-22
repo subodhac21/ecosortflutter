@@ -14,7 +14,7 @@ class Homepage extends StatelessWidget {
       future: Provider.of<WastesProvider>(context, listen: false).getAllWastes(),
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else {
           final allWastes = Provider.of<WastesProvider>(context).allData;
           return SingleChildScrollView(
@@ -24,7 +24,7 @@ class Homepage extends StatelessWidget {
                   margin: const EdgeInsets.only(bottom: 0, top: 20),
                   padding: const EdgeInsets.only(left: 20),
                   child: const Text(
-                    "Users",
+                    "Friends",
                     style: TextStyle(fontSize: 25, color: Color.fromRGBO(107,125,92, 1.0)),
                   ),
                 ),

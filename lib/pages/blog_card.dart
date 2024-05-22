@@ -39,7 +39,7 @@ class BlogCard extends StatelessWidget {
                     const SizedBox(height: 15),
                     Text(title,
                         style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
+                            fontSize: 20, fontWeight: FontWeight.bold, color: Color.fromRGBO(107,125,92, 1.0))),
                     const SizedBox(height: 5),
                     Text(desc,
                         style: const TextStyle(

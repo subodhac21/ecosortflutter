@@ -33,6 +33,11 @@ class LoginProvider with ChangeNotifier{
     _loading = value;
     notifyListeners();
   }
+  void resetUser(){
+    _userId = null;
+    _username = null;
+    _loginStatus = false;
+  }
 
   Future<void> checkLogin(String username, String password) async {
 

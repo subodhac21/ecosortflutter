@@ -12,6 +12,7 @@ import "package:flutter/material.dart";
 import "package:flutter/widgets.dart";
 import "package:provider/provider.dart";
 import "package:shared_preferences/shared_preferences.dart";
+import "after_login.dart";
 
 
 class LoggedScreen extends StatefulWidget {
@@ -103,9 +104,11 @@ class _LoggedScreenState extends State<LoggedScreen> {
           ),),
       ElevatedButton(
                   onPressed: (){
+                    loginProvider.resetUser();
+                    signProvider.resetUser();
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) =>  MyApp()),
+                      MaterialPageRoute(builder: (context) => const AfterLogin()),
                     );
                   },
                   child: const Text("Logout"),

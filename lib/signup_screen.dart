@@ -5,17 +5,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 
-class SignupPage extends StatelessWidget {
+class SignupPage extends StatefulWidget {
    SignupPage({super.key});
 
+  @override
+  State<SignupPage> createState() => _SignupPageState();
+}
+
+class _SignupPageState extends State<SignupPage> {
   TextEditingController emailController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
 
   TextEditingController userController = TextEditingController();
 
+  String username = "";
+
+  String email = "";
+
+  String password = "";
+
   @override
   Widget build(BuildContext context) {
+
     // final signProvider = Provider.of<SignupProvider>(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -90,7 +102,7 @@ class SignupPage extends StatelessWidget {
                             margin:  const EdgeInsets.only(top: 10),
                             padding:   const EdgeInsets.only(top: 15, left: 10, right: 10, bottom: 15),
                             decoration:   BoxDecoration(
-                              color:  const Color.fromRGBO(75,147,233, 1.0),
+                              color:  const Color.fromRGBO(107,125,92, 1.0),
                               borderRadius: BorderRadius.circular(8),
                               boxShadow: const [
                                 BoxShadow(
@@ -103,13 +115,18 @@ class SignupPage extends StatelessWidget {
                             child:  Row(
 
                               children: [
-                                const Icon(Icons.email, color: Colors.white, size: 30,),
+                                const Icon(Icons.person, color: Colors.white, size: 30,),
                                 Expanded(
                                   child: Container(
                                       margin: const EdgeInsets.only(left: 15),
 
                                       child:  TextField(
                                         controller: userController,
+                                        onChanged: (text){
+                                         setState(() {
+                                           username = text;
+                                         });
+                                        },
                                         decoration: const InputDecoration(
                                           border: InputBorder.none,
                                           hintText: "Enter your Username",
@@ -123,22 +140,22 @@ class SignupPage extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Consumer<SignupProvider>(
-                            builder: (context, value, child){
-                              if(value.loading==false && value.userError == true){
-                                return Container(
-                                  padding: const EdgeInsets.only(top: 20),
-                                  child: const Text("Username Field is Empty", style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 18
-                                  ),),
-                                );
-                              }
-                              else{
-                                return const Text("");
-                              }
-                            },
-                          ),
+                          // Consumer<SignupProvider>(
+                          //   builder: (context, value, child){
+                          //     if(value.loading==false && value.userError == true){
+                          //       return Container(
+                          //         padding: const EdgeInsets.only(top: 20),
+                          //         child: const Text("Username Field is Empty", style: TextStyle(
+                          //             color: Colors.red,
+                          //             fontSize: 18
+                          //         ),),
+                          //       );
+                          //     }
+                          //     else{
+                          //       return const Text("");
+                          //     }
+                          //   },
+                          // ),
                         ],
                       ),
                     ),
@@ -155,7 +172,7 @@ class SignupPage extends StatelessWidget {
                             margin:  const EdgeInsets.only(top: 10),
                             padding:   const EdgeInsets.only(top: 15, left: 10, right: 10, bottom: 15),
                             decoration:   BoxDecoration(
-                              color:  const Color.fromRGBO(75,147,233, 1.0),
+                              color:  const Color.fromRGBO(107,125,92, 1.0),
                               borderRadius: BorderRadius.circular(8),
                               boxShadow: const [
                                 BoxShadow(
@@ -175,6 +192,11 @@ class SignupPage extends StatelessWidget {
 
                                       child:  TextField(
                                         controller: emailController,
+                                        onChanged: (text){
+                                          setState(() {
+                                            email = text;
+                                          });
+                                        },
                                         decoration: const InputDecoration(
                                           border: InputBorder.none,
                                           hintText: "Enter your Email",
@@ -188,22 +210,22 @@ class SignupPage extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Consumer<SignupProvider>(
-                            builder: (context, value, child){
-                              if(value.loading==false && value.emailError == true){
-                                return Container(
-                                  padding: const EdgeInsets.only(top: 20),
-                                  child: const Text("Email Field is Empty", style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 18
-                                  ),),
-                                );
-                              }
-                              else{
-                                return const Text("");
-                              }
-                            },
-                          ),
+                          // Consumer<SignupProvider>(
+                          //   builder: (context, value, child){
+                          //     if(value.loading==false && value.emailError == true){
+                          //       return Container(
+                          //         padding: const EdgeInsets.only(top: 20),
+                          //         child: const Text("Email Field is Empty", style: TextStyle(
+                          //             color: Colors.red,
+                          //             fontSize: 18
+                          //         ),),
+                          //       );
+                          //     }
+                          //     else{
+                          //       return const Text("");
+                          //     }
+                          //   },
+                          // ),
                         ],
                       ),
                     ),
@@ -220,7 +242,7 @@ class SignupPage extends StatelessWidget {
                             margin:  const EdgeInsets.only(top: 10),
                             padding:   const EdgeInsets.only(top: 15, left: 10, right: 10, bottom: 15),
                             decoration:   BoxDecoration(
-                              color:  const Color.fromRGBO(75,147,233, 1.0),
+                              color:  const Color.fromRGBO(107,125,92, 1.0),
                               borderRadius: BorderRadius.circular(8),
                               boxShadow: const [
                                 BoxShadow(
@@ -241,6 +263,11 @@ class SignupPage extends StatelessWidget {
                                       child:  TextField(
                                         controller: passwordController,
                                         obscureText: true,
+                                        onChanged: (text){
+                                          setState(() {
+                                            password = text;
+                                          });
+                                        },
                                         decoration: const InputDecoration(
                                           border: InputBorder.none,
                                           hintText: "Enter your Password",
@@ -254,23 +281,23 @@ class SignupPage extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Consumer<SignupProvider>(
-                            builder: (context, value, child){
-
-                              if(value.loading==false && value.passError == true){
-                                return Container(
-                                  padding: const EdgeInsets.only(top: 20),
-                                  child: const Text("Password Field is Empty", style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 18
-                                  ),),
-                                );
-                              }
-                              else{
-                                return const Text("");
-                              }
-                            },
-                          ),
+                          // Consumer<SignupProvider>(
+                          //   builder: (context, value, child){
+                          //
+                          //     if(value.loading==false && value.passError == true){
+                          //       return Container(
+                          //         padding: const EdgeInsets.only(top: 20),
+                          //         child: const Text("Password Field is Empty", style: TextStyle(
+                          //             color: Colors.red,
+                          //             fontSize: 18
+                          //         ),),
+                          //       );
+                          //     }
+                          //     else{
+                          //       return const Text("");
+                          //     }
+                          //   },
+                          // ),
                         ],
                       ),
                     ),
@@ -291,22 +318,24 @@ class SignupPage extends StatelessWidget {
                   });
 
                 }
-                return Center(
-                  child: Container(
-                    width: double.tryParse("200"),
-                    height: double.tryParse("50"),
-                    margin: const EdgeInsets.only(top: 40),
-                    child: ElevatedButton(
-                      onPressed: (){
-                        signProvider.checkLogin(userController.text,emailController.text, passwordController.text);
+                return Visibility(
+                  visible: (username.trim() != "" && email.trim() != "" && password.trim() != "" ) ? true : false,
+                  child: Center(
+                    child: Container(
+                      width: double.tryParse("200"),
+                      height: double.tryParse("50"),
+                      margin: const EdgeInsets.only(top: 40),
+                      child: ElevatedButton(
+                        onPressed: (){
+                            signProvider.checkLogin(userController.text,emailController.text, passwordController.text);
+                        },
+                        child: signProvider.loading == true ? const CircularProgressIndicator(): const Text("Register", style: TextStyle(
+                            color: Colors.lightBlue,
+                            fontSize: 18
+                        ),),
+                        // child: const Text("Register"),
 
-                      },
-                      child: signProvider.loading == true ? const CircularProgressIndicator(): const Text("Register", style: TextStyle(
-                          color: Colors.lightBlue,
-                          fontSize: 18
-                      ),),
-                      // child: const Text("Register"),
-
+                      ),
                     ),
                   ),
                 );
@@ -322,6 +351,17 @@ class SignupPage extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.only(top: 20),
                       child: const Text("User with the username already exists.", style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 18
+                      ),),
+                    ),
+                  );
+                }
+                else if(value.loading==false && value.emailError == true){
+                  return Center(
+                    child: Container(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: const Text("Enter a valid email address.", style: TextStyle(
                           color: Colors.red,
                           fontSize: 18
                       ),),

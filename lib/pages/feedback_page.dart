@@ -1,6 +1,5 @@
 
 import 'package:ecosort/logged_screen.dart';
-import 'package:ecosort/pages/blog_content.dart';
 import 'package:ecosort/pages/blog_list.dart';
 import 'package:ecosort/provider/add_waste_provider.dart';
 import 'package:ecosort/provider/blog_provider.dart';

@@ -16,8 +16,8 @@ class AfterLogin extends StatefulWidget {
 class _AfterLoginState extends State<AfterLogin> {
   @override
   Widget build(BuildContext context) {
-    final loginProvider = Provider.of<LoginProvider>(context);
-    final signProvider = Provider.of<SignupProvider>(context);
+    final loginProvider = Provider.of<LoginProvider>(context, listen: true);
+    final signProvider = Provider.of<SignupProvider>(context, listen:  true);
     // return ChangeNotifierProvider<LoginProvider>(
     //   create: (_) => LoginProvider(), // Assuming your LoginProvider requires no parameters in its constructor
     //   builder: (context, _) {

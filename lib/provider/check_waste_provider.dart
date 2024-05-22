@@ -21,6 +21,9 @@ class CheckWasteProvider with ChangeNotifier {
   int? _points;
   int? get points => _points;
 
+  void setCatName(String? catname){
+    _catName = catName;
+  }
   Future<void> checkWaste(File imageFile) async {
     setLoading(true);
     String apiLink = Api().loginApi();

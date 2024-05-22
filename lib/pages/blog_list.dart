@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:ecosort/logged_screen.dart';
 import 'package:ecosort/pages/blog_card.dart';
-import 'package:ecosort/pages/blog_content.dart';
 import 'package:ecosort/pages/feedback_page.dart';
 import 'package:ecosort/provider/blog_list_provider.dart';
 import 'package:ecosort/provider/blog_provider.dart';
@@ -29,7 +28,7 @@ class _BlogListState extends State<BlogList> {
     builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         return Scaffold(
-            appBar: AppBar(title: Text('Blog List'),
+            appBar: AppBar(title: const Text('Blog List', style: TextStyle(color: Colors.white),),
               centerTitle: true,
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
@@ -38,10 +37,10 @@ class _BlogListState extends State<BlogList> {
                 },
               ),
             ),
-            body: Center(child: CircularProgressIndicator()));
+            body: const Center(child: CircularProgressIndicator()));
       } else {
         return Scaffold(
-          appBar: AppBar(title: Text('Blog List'),
+          appBar: AppBar(title: const Text('Blog List', style: TextStyle(color: Colors.white),),
           centerTitle: true,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
